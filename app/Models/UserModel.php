@@ -61,4 +61,9 @@ class UserModel extends Authenticatable
     {
         return $this->hasOne(PersonalModel::class, 'id_user');
     }
+
+    public function personalUser()
+    {
+        return $this->hasOne(PersonalUsersModel::class, 'id_user');
+    }
 }

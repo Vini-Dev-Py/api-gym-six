@@ -27,10 +27,13 @@ class AuthController extends Controller implements SuperUsersDomain
         }
 
         $user = Auth::user();
+
+        $user->load("personal");
+        
         $token = $user->createToken(env('APP_NAME'))->plainTextToken;
 
 
-        unset($user['id'], $user['active'], $user['created_at'], $user['email_verified_at'], $user['updated_at']);
+        unset($user['created_at'], $user['email_verified_at'], $user['updated_at']);
 
         return response()->json([
             'user' => $user,

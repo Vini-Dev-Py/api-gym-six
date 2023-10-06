@@ -5,21 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PersonalModel extends Model
+class PersonalUsersModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'personal_code';
+    protected $table = 'personal_user';
     protected $keyType = 'uuid';
     public $incrementing = false;
 
     protected $fillable = [
-        'personal_code',
-        'id_user'
+        'id_user',
+        'id_personal_code'
     ];
 
     public function user()
     {
-        return $this->belongsTo(UserModel::class, 'id_user');
+        return $this->hasOne(UserModel::class, "id", "id_user");
     }
 }

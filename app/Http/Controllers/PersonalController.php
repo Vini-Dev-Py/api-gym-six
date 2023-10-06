@@ -23,6 +23,8 @@ class PersonalController extends Controller
 
         $personals = $this->personalModel->query()->get();
 
+        $personals->load('user');
+
         return $this->success('Listando todos os professores', $personals, 200);
     }
 
@@ -35,6 +37,8 @@ class PersonalController extends Controller
         if (!$personal) {
             return $this->error('Esse professor não existe', 404);
         }
+
+        $personal->load('user');
 
         return $this->success('Professor encontrado', $personal, 200);
     }

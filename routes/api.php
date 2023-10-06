@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\PersonalUsersController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -27,11 +28,15 @@ Route::middleware('auth:sanctum')->group(function () {
     // Training
 
     Route::get("/workouts", [TrainingController::class, "getAll"]);
+    Route::get("/workouts/member/{id}", [TrainingController::class, "getAllByMember"]);
     Route::get("/training/{id}", [TrainingController::class, "getById"]);
     Route::post("/training", [TrainingController::class, "create"]);
     Route::put('/training/{id}', [TrainingController::class, 'update']);
     Route::delete('/training/{id}', [TrainingController::class, 'delete']);
     Route::put('/training/active/{id}', [TrainingController::class, 'updateActive']);
+
+    Route::get("/get/users/personal/{id}", [PersonalUsersController::class, "getUsersByPersonal"]);
+    Route::post("/add/user/personal", [PersonalUsersController::class, "create"]);
 
     // Logout
 

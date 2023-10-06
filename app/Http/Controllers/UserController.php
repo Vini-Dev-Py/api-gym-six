@@ -30,7 +30,7 @@ class UserController extends Controller
         $users = $this->userModel->query()->get();
 
         foreach ($users as $user) {
-            $user->load('personal');
+            $user->load('personal', 'personalUser');
 
             $daysOfWeekStructure = $user->getDaysOfWeekStructure();
 
@@ -64,7 +64,7 @@ class UserController extends Controller
             return $this->error('Esse usuário não existe', 404);
         }
 
-        $user->load('personal');
+        $user->load('personal', 'personalUser');
 
         $daysOfWeekStructure = $user->getDaysOfWeekStructure();
 
@@ -88,7 +88,7 @@ class UserController extends Controller
             'name' => $request->all()['name'],
             'email' => $request->all()['email'],
             'password' => Hash::make($request->all()['password']),
-            'role' => $request->all()['role'],
+            'role' => isset($request->all()['role']) ? $request->all()['role'] : "aluno",
             'phone' => $request->all()['phone'],
             'RG' => isset($request->all()['RG']) ? $request->all()['RG'] : null,
             'CPF' => $request->all()['CPF']
