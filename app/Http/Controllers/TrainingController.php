@@ -26,11 +26,13 @@ class TrainingController extends Controller
         return $this->success('Listando todos os treinos', $trainings, 200);
     }
 
-    public function getAllByMember($id)
+    public function getAllByMember($id, $day)
     {
         $user = Auth::user();
 
-        $training = $this->trainingModel->query()->where("id_user", "=", $id)->orderBy("position", "asc")->get();
+        $training = $this->trainingModel->query()->where("id_user", "=", $id)->where("day", "=", $day)->orderBy("position", "asc")->get();
+
+        $training->load("personalUser");
 
         return $this->success("Listando todos os treinos do membro", $training, 200);
     }
@@ -75,7 +77,7 @@ class TrainingController extends Controller
             return $this->error('Esse treino não existe', 404);
         }
 
-        $training->fill($request->only(['name', 'email', 'password']));
+        $training->fill($request->only(["exercise_name", "url_video_img", "sets", "repes", "rest_time"]));
         $training->save();
 
         return $this->success('treino atualizado com sucesso', $training, 200);
@@ -91,35 +93,21 @@ class TrainingController extends Controller
             return $this->error('Esse treino não existe', 404);
         }
 
-        if (!$training->active) {
-            return $this->error('Esse treino ja esta desativado', 422);
-        }
+        $training->delete();
 
-        $training->active = false;
-
-        $training->save();
-
-        return $this->success('treino desativado com sucesso', $training, 200);
+        return $this->success('treino deletada com sucesso', $training, 200);
     }
 
-    public function updateActive($id)
+    public function deleteAll($id)
     {
         $user = Auth::user();
 
-        $training = $this->trainingModel::where('id', $id)->first();
+        $trainings = $this->trainingModel->query()->where("id_user", "=", $id)->get();
 
-        if (!$training) {
-            return $this->error('Esse treino não existe', 404);
-        } 
-
-        if ($training->active) {
-            return $this->error('Esse treino ja esta ativo', 422);
+        foreach ($trainings as $training) {
+            $training->delete();
         }
 
-        $training -> active = true;
-
-        $training -> save();
-
-        return $this->success('treino ativado com sucesso', $training, 200);
+        return $this->success("Todos os treinos deletados", $id, 200);
     }
 }

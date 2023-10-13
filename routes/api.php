@@ -28,12 +28,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // Training
 
     Route::get("/workouts", [TrainingController::class, "getAll"]);
-    Route::get("/workouts/member/{id}", [TrainingController::class, "getAllByMember"]);
+    Route::get("/workouts/member/{id}/{day}", [TrainingController::class, "getAllByMember"]);
     Route::get("/training/{id}", [TrainingController::class, "getById"]);
     Route::post("/training", [TrainingController::class, "create"]);
     Route::put('/training/{id}', [TrainingController::class, 'update']);
     Route::delete('/training/{id}', [TrainingController::class, 'delete']);
-    Route::put('/training/active/{id}', [TrainingController::class, 'updateActive']);
+    Route::delete('/trainings/all/{id}', [TrainingController::class, 'deleteAll']);
 
     Route::get("/get/users/personal/{id}", [PersonalUsersController::class, "getUsersByPersonal"]);
     Route::post("/add/user/personal", [PersonalUsersController::class, "create"]);

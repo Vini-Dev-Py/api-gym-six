@@ -25,8 +25,8 @@ class TrainingModel extends Model
         'position'
     ];
 
-    public function personal()
+    public function personalUser()
     {
-        return $this->hasOne(PersonalModel::class, 'id_personal_code');
+        return $this->hasOne(PersonalModel::class, 'id', 'id_personal_code');
     }
 }
