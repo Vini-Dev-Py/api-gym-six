@@ -39,14 +39,12 @@ class UserController extends Controller
                 $trainingByUser = $this->trainingModel::where('id_user', $user->id)->orderBy("position", "asc")->get();
 
                 foreach ($trainingByUser as $training) {
-    
                     if ($training->day === $day) {
                         $daysOfWeekStructure[$day][] = $training;
                     }
                 }
-    
-                $user->days = $daysOfWeekStructure;
             }
+            $user->days = $daysOfWeekStructure;
         }
 
         return $this->success('Listando todos os usuários', $users, 200);
@@ -75,9 +73,9 @@ class UserController extends Controller
                     $daysOfWeekStructure[$day][] = $training;
                 }
             }
-
-            $user->days = $daysOfWeekStructure;
         }
+
+        $user->days = $daysOfWeekStructure;
 
         return $this->success('Usuário encontrado', $user, 200);
     }
@@ -155,8 +153,23 @@ class UserController extends Controller
         return $this->success('Usuário ativado com sucesso', $user, 200);
     }
 
-    public function updatePersonalCode($id)
+    public function updatePassword(Request $request)
     {
-        
+        $user = Auth::user();
+
+        $user = $this->userModel::find($user->id);
+
+        if (!$user) {
+            return $this->error('Esse usuário não existe', 404);
+        }
+
+        if (!Hash::check($request->input("password"), $user->password)) {
+            return $this->error('Senha incorreta', 404);
+        }
+
+        $user->password = Hash::make($request->input('newPassword'));
+        $user->save();
+
+        return $this->success('Senha atualizada com sucesso', $user, 200);
     }
 }

@@ -15,6 +15,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/users/{id}', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'delete']);
     Route::put('/users/active/{id}', [UserController::class, 'updateActive']);
+    Route::put('/user/password', [UserController::class, 'updatePassword']);
 
     // Personal Code
 
